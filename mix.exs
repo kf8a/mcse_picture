@@ -5,7 +5,7 @@ defmodule McsePicture.MixProject do
     [
       app: :mcse_picture,
       version: "0.1.0",
-      elixir: "~> 1.18",
+      elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -26,7 +26,7 @@ defmodule McsePicture.MixProject do
       {:ecto_sqlite3, "~> 0.12"},
       {:ecto, "~> 3.10"},
       {:igniter, "~> 0.1", only: [:dev, :test]},
-      {:jackalope, "~> 0.9.0"},
+      {:tortoise311, "~> 0.12.1"},
       {:req, "~> 0.5.14"}
     ]
   end

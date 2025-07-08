@@ -1,6 +1,6 @@
 # McsePicture
 
-**TODO: Add description**
+A very small program to pull an image from a D7180 camera extract a frame using ffmpeg and forward the frame to an MQTT broker.
 
 ## Installation
 
