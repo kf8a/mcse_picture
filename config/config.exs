@@ -8,7 +8,7 @@ config :mcse_picture, Oban,
     {Oban.Plugins.Pruner, max_age: 60 * 60 * 24 * 7},
     {Oban.Plugins.Cron,
      crontab: [
-       {"*/30 4-22 * * *", McsePicture.Workers.Image}
+       {"*/3 4-22 * * *", McsePicture.Workers.Image}
      ]}
   ]
 
@@ -17,8 +17,8 @@ config :mcse_picture, McsePicture.Repo,
   database: "mcse_picture.db",
   pool_size: 10
 
-# # Configure Ecto
-# config :mcse_picture,
-#   ecto_repos: [McsePicture.Repo]
+# Configure Ecto
+config :mcse_picture,
+  ecto_repos: [McsePicture.Repo]
 
 import_config "#{config_env()}.exs"
