@@ -29,7 +29,8 @@ defmodule McsePicture.MixProject do
       {:tortoise311, "~> 0.12.1"},
       {:briefly, "~> 0.4"},
       {:jason, "~> 1.4"},
-      {:astro, "~> 1.1"}
+      {:astro, "~> 1.1"},
+      {:tz, "~> 0.28.1"}
     ]
   end
 end
