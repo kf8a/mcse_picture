@@ -3,6 +3,7 @@ import Config
 # Configure Oban with SQLite3
 config :mcse_picture, Oban,
   engine: Oban.Engines.Lite,
+  queues: [default: 10],
   repo: McsePicture.Repo,
   plugins: [
     {Oban.Plugins.Pruner, max_age: 60 * 60 * 24 * 7},
