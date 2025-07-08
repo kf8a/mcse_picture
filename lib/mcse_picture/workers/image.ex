@@ -17,13 +17,14 @@ defmodule McsePicture.Workers.Image do
         data =
           Base.encode64(:erlang.term_to_binary(%{date: DateTime.utc_now(), picture: picture}))
 
-        Tortoise311.publish("mcse_picture", "phenocam/lter/picture", data)
+        Tortoise311.publish("mcse_picture", "phenocam/1-lter/picture", data)
 
       {:error, reason} ->
         Logger.error("Error downloading and extracting frame: #{reason}")
         {:error, reason}
     end
 
+    Briefly.cleanup()
     :ok
   end
 end

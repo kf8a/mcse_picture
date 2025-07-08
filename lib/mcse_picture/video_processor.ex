@@ -34,7 +34,7 @@ defmodule McsePicture.VideoProcessor do
 
     case System.cmd("ffmpeg", cmd, stderr_to_stdout: true) do
       {_output, 0} ->
-        {:ok, "#{output_path}.jpg"}
+        {:ok, "#{output_path}"}
 
       {error_output, exit_code} ->
         {:error, "FFmpeg failed with exit code #{exit_code}: #{error_output}"}
@@ -53,25 +53,19 @@ defmodule McsePicture.VideoProcessor do
   - {:error, reason} on failure
   """
   def download_and_extract_frame(url, time_seconds \\ 8) do
-    # now = DateTime.utc_now() |> Calendar.strftime("%Y%m%d_%H%M%S")
-    # temp_path = Path.join(System.tmp_dir(), "mcse_picture_#{:erlang.unique_integer()}.flv")
-    # frame_filename = "#{now}_frame"
     {:ok, frame_path} = Briefly.create(extname: ".jpg", prefix: "mcse_picture_")
 
     case download_video(url) do
       {:ok, video_filename} ->
         case extract_frame(video_filename, frame_path, time_seconds) do
           {:ok, frame_path} ->
-            # File.rm(video_filename)
             {:ok, video_filename, frame_path}
 
           {:error, reason} ->
-            # File.rm(video_filename)
             {:error, "Frame extraction failed: #{reason}"}
         end
 
       {:error, reason} ->
-        # File.rm(temp_path)
         {:error, "Video download failed: #{reason}"}
     end
   end
