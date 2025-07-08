@@ -22,6 +22,6 @@ config :mcse_picture, McsePicture.Repo,
 config :mcse_picture,
   ecto_repos: [McsePicture.Repo]
 
-config :elixir, :time_zone_database, Tz.TimeZoneDatabase
+config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
 import_config "#{config_env()}.exs"

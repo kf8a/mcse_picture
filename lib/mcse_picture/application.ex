@@ -26,18 +26,6 @@ defmodule McsePicture.Application do
          handler: {Tortoise311.Handler.Logger, []},
          clean_session: true
        ]}
-      # {Jackalope,
-      #  [
-      #    client_id: "data_collector",
-      #    server: {Tortoise311.Transport.Tcp, [host: "gprpc32.kbs.msu.edu", port: 1884]},
-      #    # server:
-      #    #   {Tortoise311.Transport.SSL,
-      #    #    [cacertfile: :certifi.cacertfile(), host: @amqp_host, port: 8881]},
-      #    user_name: @username,
-      #    handler: Jackalope.Handler.Logger,
-      #    password: @password,
-      #    clean_session: true
-      #  ]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
