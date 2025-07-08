@@ -1,4 +1,6 @@
 defmodule McsePicture.VideoProcessor do
+  require Logger
+
   @doc """
   Extracts a single frame from a video file at the specified time.
 
@@ -16,18 +18,19 @@ defmodule McsePicture.VideoProcessor do
     time_str = format_time(time_seconds)
 
     # Build the ffmpeg command
-    cmd = [
-      "ffmpeg",
-      "-i",
-      input_path,
-      "-ss",
-      time_str,
-      "-frames:v",
-      "1",
-      # Overwrite output file if it exists
-      "-y",
-      "#{output_path}.jpg"
-    ]
+    cmd =
+      [
+        "-i",
+        input_path,
+        "-ss",
+        time_str,
+        "-frames:v",
+        "1",
+        # Overwrite output file if it exists
+        "-y",
+        "#{output_path}"
+      ]
+      |> IO.inspect(label: "cmd")
 
     case System.cmd("ffmpeg", cmd, stderr_to_stdout: true) do
       {_output, 0} ->
@@ -50,38 +53,47 @@ defmodule McsePicture.VideoProcessor do
   - {:error, reason} on failure
   """
   def download_and_extract_frame(url, time_seconds \\ 8) do
-    # Generate timestamp for filenames
-    now = DateTime.utc_now() |> Calendar.strftime("%Y%m%d_%H%M%S")
-    video_filename = "#{now}.flv"
-    frame_filename = "#{now}_frame"
+    # now = DateTime.utc_now() |> Calendar.strftime("%Y%m%d_%H%M%S")
+    # temp_path = Path.join(System.tmp_dir(), "mcse_picture_#{:erlang.unique_integer()}.flv")
+    # frame_filename = "#{now}_frame"
+    {:ok, frame_path} = Briefly.create(extname: ".jpg", prefix: "mcse_picture_")
 
-    # Download the video
-    case download_video(url, video_filename) do
-      {:ok, _} ->
-        # Extract frame from the downloaded video
-        case extract_frame(video_filename, frame_filename, time_seconds) do
+    case download_video(url) do
+      {:ok, video_filename} ->
+        case extract_frame(video_filename, frame_path, time_seconds) do
           {:ok, frame_path} ->
+            # File.rm(video_filename)
             {:ok, video_filename, frame_path}
 
           {:error, reason} ->
+            # File.rm(video_filename)
             {:error, "Frame extraction failed: #{reason}"}
         end
 
       {:error, reason} ->
+        # File.rm(temp_path)
         {:error, "Video download failed: #{reason}"}
     end
   end
 
-  defp download_video(url, filename) do
-    case Req.get(url,
-           timeout: 60_000,
-           into: File.stream!(filename)
-         ) do
-      {:ok, _response} ->
-        {:ok, filename}
+  defp download_video(url) do
+    {:ok, temp_path} = Briefly.create(extname: ".flv")
+    Logger.info("Downloading video from #{url} to #{temp_path}")
 
-      {:error, error} ->
-        {:error, "Download failed: #{inspect(error)}"}
+    cmd = ["-m", "60", "-s", "-o", temp_path, url]
+
+    {output, exit_code} =
+      System.cmd("/usr/bin/curl", cmd, stderr_to_stdout: true)
+
+    case exit_code do
+      0 ->
+        {:ok, temp_path}
+
+      28 ->
+        {:ok, temp_path}
+
+      _ ->
+        {:error, "Curl failed with exit code #{exit_code}: #{output}"}
     end
   end
 

@@ -24,3 +24,5 @@ mcse_picture-*.tar
 .DS_Store
 
 *.db-*
+.env
+.cursor

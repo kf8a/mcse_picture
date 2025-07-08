@@ -8,7 +8,7 @@ config :mcse_picture, Oban,
     {Oban.Plugins.Pruner, max_age: 60 * 60 * 24 * 7},
     {Oban.Plugins.Cron,
      crontab: [
-       {"*/3 4-22 * * *", McsePicture.Workers.Image}
+       {"*/30 4-22 * * *", McsePicture.Workers.Image}
      ]}
   ]
 

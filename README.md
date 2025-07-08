@@ -1,7 +1,8 @@
 # McsePicture
 
-A very small program to periodically pull an image from a D7180 camera extract a frame using ffmpeg and forward the frame to an MQTT broker. 
+A very small program to periodically pull an image from a D7180 camera during daylight hours, extract a frame using ffmpeg, and forward the frame to an MQTT broker. 
 
+This program relies on ffmpeg for frame extraction and curl for download and it ignores a lot of errors.
 
 ## Installation
 
