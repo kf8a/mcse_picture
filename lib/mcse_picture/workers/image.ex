@@ -14,9 +14,13 @@ defmodule McsePicture.Workers.Image do
         Logger.info("Got image at frame_path: #{frame_path}")
         picture = File.read!(frame_path)
 
+        now =
+          DateTime.utc_now()
+          |> DateTime.to_unix(:second)
+
         if byte_size(picture) > 0 do
           data =
-            Base.encode64(:erlang.term_to_binary(%{date: DateTime.utc_now(), picture: picture}))
+            Base.encode64(:erlang.term_to_binary(%{date: now, picture: picture}))
 
           Tortoise311.publish("mcse_picture", "phenocam/1-lter/picture", data)
         else
