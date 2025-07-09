@@ -14,10 +14,14 @@ defmodule McsePicture.Workers.Image do
         Logger.info("Got image at frame_path: #{frame_path}")
         picture = File.read!(frame_path)
 
-        data =
-          Base.encode64(:erlang.term_to_binary(%{date: DateTime.utc_now(), picture: picture}))
+        if byte_size(picture) > 0 do
+          data =
+            Base.encode64(:erlang.term_to_binary(%{date: DateTime.utc_now(), picture: picture}))
 
-        Tortoise311.publish("mcse_picture", "phenocam/1-lter/picture", data)
+          Tortoise311.publish("mcse_picture", "phenocam/1-lter/picture", data)
+        else
+          Logger.error("No data to publish")
+        end
 
       {:error, reason} ->
         Logger.error("Error downloading and extracting frame: #{reason}")
