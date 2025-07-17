@@ -29,7 +29,8 @@ defmodule McsePicture.MixProject do
       {:tortoise311, "~> 0.12.1"},
       {:briefly, "~> 0.4"},
       {:jason, "~> 1.4"},
-      {:tzdata, "~> 1.1"}
+      {:tzdata, "~> 1.1"},
+      {:telemetry_metrics_prometheus, "~> 1.1.0"}
     ]
   end
 end
