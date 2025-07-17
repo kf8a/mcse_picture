@@ -5,6 +5,11 @@ defmodule McsePicture.Application do
 
   use Application
 
+  @duration_unit {:native, :second}
+
+  # Define histogram buckets for duration measurements (in milliseconds)
+  @buckets [10, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 30000, 60000, 120_000]
+
   @impl true
   def start(_type, _args) do
     username = Application.get_env(:mcse_picture, :mqtt_username)
